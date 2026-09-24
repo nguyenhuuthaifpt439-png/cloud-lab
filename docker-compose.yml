@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./mern-demo/server
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb+srv://admin:Admin112233@cluster0.eaue62x.mongodb.net/mern?appName=Cluster0
+    restart: always
+
+  frontend:
+    build: ./client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: always

@@ -9,13 +9,12 @@ function App() {
     name: '',
     email: ''
   });
-  // Trạng thái lưu ID sinh viên đang sửa (null nếu đang thêm mới)
   const [editingId, setEditingId] = useState(null);
 
-  // URL Backend API
-  const API_URL = 'https://automatic-eureka-4qvp65rw7jqhq6gv-5000.app.github.dev/api/students';
+  // Linh hoạt: Tự động nhận API_URL từ biến môi trường hoặc dùng Localhost mặc định
+  const API_URL = 'http://localhost:5000/api/students';
 
-  // Câu 47: Lấy danh sách sinh viên
+  // Lấy danh sách sinh viên
   const fetchStudents = async () => {
     try {
       const response = await axios.get(API_URL);
@@ -29,7 +28,7 @@ function App() {
     fetchStudents();
   }, []);
 
-  // Xử lý khi thay đổi ô input
+  // Xử lý thay đổi ô nhập liệu
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -37,7 +36,7 @@ function App() {
     });
   };
 
-  // Câu 49 & Câu 51: Xử lý Thêm mới hoặc Cập nhật sinh viên
+  // Thêm mới hoặc Cập nhật sinh viên
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.studentId || !formData.name || !formData.email) {
@@ -47,18 +46,16 @@ function App() {
 
     try {
       if (editingId) {
-        // CÂU 51: Gọi API PUT để cập nhật sinh viên
         await axios.put(`${API_URL}/${editingId}`, formData);
         alert('Cập nhật thông tin sinh viên thành công!');
         setEditingId(null);
       } else {
-        // CÂU 49: Gọi API POST để thêm sinh viên mới
         await axios.post(API_URL, formData);
         alert('Thêm sinh viên thành công!');
       }
       
-      setFormData({ studentId: '', name: '', email: '' }); // Reset form
-      fetchStudents(); // Cập nhật lại danh sách
+      setFormData({ studentId: '', name: '', email: '' });
+      fetchStudents();
     } catch (error) {
       console.error('Lỗi khi lưu dữ liệu:', error);
       const serverMessage = error.response?.data?.message || 'Thao tác thất bại!';
@@ -66,7 +63,7 @@ function App() {
     }
   };
 
-  // CÂU 50: Xóa sinh viên (DELETE)
+  // Xóa sinh viên
   const handleDelete = async (id) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa sinh viên này?')) {
       try {
@@ -80,7 +77,7 @@ function App() {
     }
   };
 
-  // Chuẩn bị dữ liệu đưa lên form khi bấm nút "Sửa"
+  // Chuẩn bị dữ liệu để sửa
   const handleEdit = (student) => {
     setEditingId(student._id);
     setFormData({
@@ -90,7 +87,7 @@ function App() {
     });
   };
 
-  // Hủy trạng thái sửa
+  // Hủy sửa
   const handleCancelEdit = () => {
     setEditingId(null);
     setFormData({ studentId: '', name: '', email: '' });
@@ -100,7 +97,6 @@ function App() {
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', maxWidth: '900px', margin: '0 auto' }}>
       <h1>Quản Lý Sinh Viên</h1>
 
-      {/* Form nhập dữ liệu (Thêm / Sửa) */}
       <div style={{ marginBottom: '30px', padding: '15px', border: '1px solid #ccc', borderRadius: '8px' }}>
         <h2>{editingId ? 'Cập Nhật Thông Tin Sinh Viên' : 'Thêm Sinh Viên Mới'}</h2>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -164,7 +160,6 @@ function App() {
         </form>
       </div>
 
-      {/* Bảng danh sách sinh viên */}
       <div>
         <h2>Danh Sách Sinh Viên</h2>
         <table border="1" cellPadding="10" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse' }}>
