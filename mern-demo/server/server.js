@@ -20,7 +20,7 @@ app.get('/api/hello', (req, res) => {
 });
 
 // Kết nối MongoDB (THAY CHUỖI ATLAS THẬT CỦA BẠN VÀO MỤC NÀY)
-const ATLAS_URI = "mongodb+srv://admin:admin123456@cluster0.eaue62x.mongodb.net/mern?retryWrites=true&w=majority";
+const ATLAS_URI = "mongodb+srv://admin:admin123456@cluster0.eaue62xdocker build -t mern-backend ..mongodb.net/mern?retryWrites=true&w=majority";
 const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || ATLAS_URI;
 
 mongoose.connect(MONGO_URI)
